@@ -126,9 +126,6 @@ Let's plot a box covering parts of southern California: 32-35N, 117-119W. **note
 The R 'apply' function lets us compute the average over the region easily; here we specify 3 as the dimension over which to apply the mean, and this applies the average over all values corresponding to each time. As a bonus, I've also used the 'group_by' and 'summarize' functions to create annual temperatures from this data before plotting the time series; you can also just plot the raw monthly values if you prefer.
 
 ```{r getregion}
-lats=which(lat >= 32 & lat <= 35)
-lons=which(lon >= 241 & lon <= 243)
-
 #THIS IS LUCAS'S CODE FOR THE NEXT FEW LINES
 #### PUT LAT AND LONG READINGS TO SPECIFY AREA HERE
 lats=which(lat >= 76 & lat <= 81) # insert lattitude and longitude readings here!
@@ -142,6 +139,26 @@ yrclim$dt = unique(year(rtime))
 
 ggplot(yrclim, aes(dt, Tann-273.15))+geom_point()+labs(y="[INSERT REGION HERE] Temperature", x="Year")+ geom_smooth(method="lm")
 ```
+
+```{r}
+#THIS IS LUCAS'S CODE TO WRITE HISTORICAL 1 DATA
+#I GUESS WE MIGHT HAVE TO RUN THIS 4 TIMES IN ORDER TO GET 4 HISTORICAL/DIFFERENT DATASETS?
+#KINDA CONFUSED WHAT IS HAPPENING HERE
+clim_full <- clim %>%
+  mutate(year = year(rtime)) %>% 
+  mutate(month = month(rtime)) %>% 
+  mutate(date = as.Date(paste(year, month, "01", sep = "-"))) %>% 
+  mutate(average_tas_c = tsavg - 273.15) %>% 
+  dplyr::select(-tsavg, -time, -year, -month) %>% 
+  # separate(col = time, into = c("date", "tod"), sep = " ") %>% 
+  # mutate(date = mdy(date)) %>% 
+  # mutate(month = month(date, label = TRUE))
+  # dplyr::select(-tsavg, -tod) %>% 
+  write_csv(file = "historical1" , col_names = TRUE, append = TRUE)
+
+```
+
+
 
 #SOPHIA ENEDED CODING HERE!!!! ###########
 
