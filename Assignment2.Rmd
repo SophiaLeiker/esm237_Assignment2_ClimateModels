@@ -101,17 +101,17 @@ rtime <- chron(time,origin=c(tmonth, tday, tyear))
 OK now let's read in the CESM temperature data! This may take a while, depending on your computer and the size of the data file. It's also a good idea to get some attributes of the data: the full name ("long_name"), units, and the value used to fill in places where there are no data ("_FillValue"). 
 
 ```{r readtemp}
-tas <- ncvar_get(ncin, "tas") #Sophia Note: I changed this to "tas"
-dlname <- ncatt_get(ncin,dname,"long_name")
-dunits <- ncatt_get(ncin,dname,"units")
-fillvalue <- ncatt_get(ncin,dname,"_FillValue")
+tas <- ncvar_get(ncin, "tas") #SOPHIA NOTES : I changed this to "tas"
+dlname <- ncatt_get(ncin,"tas","long_name") #SOPHIA NOTES: I CHANGED dname to "tas" here
+dunits <- ncatt_get(ncin,"tas","units") #SOPHIA NOTES: I CHANGED dname to "tas" here
+fillvalue <- ncatt_get(ncin,"tas","_FillValue") #SOPHIA NOTES: I CHANGED dname to "tas" here
 ```
 
 Now we have temperature loaded in and ready to be processed; the dimensions of the "TS" array are [lat x lon x time]. We can make a time slice through the data to see a map of surface temperature at a particular time: say, January 1920 (the first entry in the file).
 
 ```{r slice}
 m <- 1
-tmp_slice <- TS[,,m]-273.15     # convert Kelvin to Celsius
+tmp_slice <- tas[,,m]-273.15     # convert Kelvin to Celsius
 # levelplot of the slice
 grid <- expand.grid(lon=lon, lat=lat)
 cutpts <- c(-50,-40,-30,-20,-10,0,10,20,30,40,50)
@@ -129,14 +129,22 @@ The R 'apply' function lets us compute the average over the region easily; here 
 lats=which(lat >= 32 & lat <= 35)
 lons=which(lon >= 241 & lon <= 243)
 
-tsavg <- apply(TS[lons,lats,],3,mean)
+#THIS IS LUCAS'S CODE FOR THE NEXT FEW LINES
+#### PUT LAT AND LONG READINGS TO SPECIFY AREA HERE
+lats=which(lat >= 76 & lat <= 81) # insert lattitude and longitude readings here!
+lons=which(lon >= 10 & lon <= 30)
+
+tsavg <- apply(tas[lons,lats,],3,mean)
 
 clim <- data.frame(time=rtime, tsavg=tsavg)
 yrclim = clim %>% group_by(year(rtime)) %>% summarize(Tann=mean(tsavg))
 yrclim$dt = unique(year(rtime))
 
-ggplot(yrclim, aes(dt, Tann-273.15))+geom_point()+labs(y="Southern CA Temperature", x="Year")+ geom_smooth(method="lm")
+ggplot(yrclim, aes(dt, Tann-273.15))+geom_point()+labs(y="[INSERT REGION HERE] Temperature", x="Year")+ geom_smooth(method="lm")
 ```
+
+#SOPHIA ENEDED CODING HERE!!!! ###########
+
 
 Part 2: E3SM Data
 
