@@ -43,7 +43,7 @@ library(here)
 
 # path and filename for data
 ncpath <- here("data")
-ncname <- "tas_Amon_GISS-E2-1-G_1pctCO2_r1i1p1f1_gn_185001-190012.nc"  # CESM1 filename
+ncname <- "tas_historical_r1i1p3f1_1850-1900.nc"  # CESM1 filename
 ncfname <- paste(ncpath, ncname, sep="/")
 dname <- "TS"  # this is the name of the variable you want to look at
 
@@ -128,8 +128,9 @@ The R 'apply' function lets us compute the average over the region easily; here 
 ```{r getregion}
 #THIS IS LUCAS'S CODE FOR THE NEXT FEW LINES
 #### PUT LAT AND LONG READINGS TO SPECIFY AREA HERE
-lats=which(lat >= 76 & lat <= 81) # insert lattitude and longitude readings here!
-lons=which(lon >= 10 & lon <= 30)
+##These latitutde and longitute ranges align with Concordian Station up in Antarctica 
+lats=which(lat >= 72.6 & lat <= 77.6) # insert lattitude and longitude readings here!
+lons=which(lon >= 120.9 & lon <= 125.9)
 
 tsavg <- apply(tas[lons,lats,],3,mean)
 
@@ -137,7 +138,7 @@ clim <- data.frame(time=rtime, tsavg=tsavg)
 yrclim = clim %>% group_by(year(rtime)) %>% summarize(Tann=mean(tsavg))
 yrclim$dt = unique(year(rtime))
 
-ggplot(yrclim, aes(dt, Tann-273.15))+geom_point()+labs(y="[INSERT REGION HERE] Temperature", x="Year")+ geom_smooth(method="lm")
+ggplot(yrclim, aes(dt, Tann-273.15))+geom_point()+labs(y="Concordia Station Temperature", x="Year")+ geom_smooth(method="lm")
 ```
 
 ```{r}
@@ -149,12 +150,12 @@ clim_full <- clim %>%
   mutate(month = month(rtime)) %>% 
   mutate(date = as.Date(paste(year, month, "01", sep = "-"))) %>% 
   mutate(average_tas_c = tsavg - 273.15) %>% 
-  dplyr::select(-tsavg, -time, -year, -month) %>% 
+  dplyr::select(-tsavg, -time, -year, -month) #%>% 
   # separate(col = time, into = c("date", "tod"), sep = " ") %>% 
   # mutate(date = mdy(date)) %>% 
   # mutate(month = month(date, label = TRUE))
   # dplyr::select(-tsavg, -tod) %>% 
-  write_csv(file = "historical1" , col_names = TRUE, append = TRUE)
+  #write_csv(file = "historical1" , col_names = TRUE, append = TRUE)
 
 ```
 
