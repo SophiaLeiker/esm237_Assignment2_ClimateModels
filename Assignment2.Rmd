@@ -173,8 +173,17 @@ Here is a brief demonstration of how to read in data from E3SM; once you do, you
 ncpath <- here("data")   # path (directory)
 dname <- "tas"  # this is the name of the variable you want to look at
 
-ncname1 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
+g1 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
 ncname2 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
+
+
+
+
+
+
+
+
+
 
 ncfname1 <- paste(ncpath, ncname1, sep="/")
 ncfname2 <- paste(ncpath, ncname2, sep="/")
@@ -218,5 +227,7 @@ You can use concatenation to stick the temperature data together as well: here I
 tas1 <- ncvar_get(ncin_e3sm1, "tas")
 tas2 <- ncvar_get(ncin_e3sm2, "tas")
 
-tas=abind(tas1,tas2,along=1)
+
+
+#tas=abind(tas1,tas2,along=1)
 ```
