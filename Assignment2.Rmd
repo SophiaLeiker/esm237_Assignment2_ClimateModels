@@ -173,39 +173,56 @@ Here is a brief demonstration of how to read in data from E3SM; once you do, you
 ncpath <- here("data")   # path (directory)
 dname <- "tas"  # this is the name of the variable you want to look at
 
-#historical data from models
+#historical data from NASA models GISS-E2.1-G and NASA GISS-E2.1-H
+#note the f_ before each one because this is just file name 
 
-e2_1_g_1850_1900 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
-e2_1_g_1901_1950 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
-e2_1_g_1951_2000 <- "1g_tas_historical_1951-2000.nc"  # E3SM filename
-e2_1_g_2001_2014 <- "1g_tas_historical_2001-2014.nc"  # E3SM filename
+f_e2_1_g_1850_1900 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
+f_e2_1_g_1901_1950 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
+f_e2_1_g_1951_2000 <- "1g_tas_historical_1951-2000.nc"  # E3SM filename
+f_e2_1_g_2001_2014 <- "1g_tas_historical_2001-2014.nc"  # E3SM filename
 
-e2_1_h_1850_1900 <- "1h_tas_historical_1850-1900.nc"  # E3SM filename
-e2_1_h_1901_1950 <- "1h_tas_historical_1901-1950.nc"  # E3SM filename
-e2_1_h_1951_2000 <- "1h_tas_historical_1951-2000.nc"  # E3SM filename
-e2_1_h_2001_2014 <- "1h_tas_historical_2001-2014.nc"  # E3SM filename
+f_e2_1_h_1850_1900 <- "1h_tas_historical_1850-1900.nc"  # E3SM filename
+f_e2_1_h_1901_1950 <- "1h_tas_historical_1901-1950.nc"  # E3SM filename
+f_e2_1_h_1951_2000 <- "1h_tas_historical_1951-2000.nc"  # E3SM filename
+f_e2_1_h_2001_2014 <- "1h_tas_historical_2001-2014.nc"  # E3SM filename
+
+#predictive data from ssp1 rcp 26 and ssp5 rcp 85 from both NASA models
+f_e2_1_g_ssp126_2015_2050 <- "1g_tas_ssp126_2015-2050.nc" # E3SM filename
+f_e2_1_g_ssp126_2051_2100 <- "1g_tas_ssp126_2051-2100.nc" # E3SM filename
+f_e2_1_g_ssp585_2015_2050 <- "1g_tas_ssp585_2015-2050.nc" # E3SM filename
+f_e2_1_g_ssp585_2051_2100 <- "1g_tas_ssp585_2051-2100.nc" # E3SM filename
+f_e2_1_h_ssp126_2015_2050 <- "1h_tas_ssp126_2015-2050.nc" # E3SM filename
+f_e2_1_h_ssp126_2051_2100 <- "1h_tas_ssp126_2051-2100.nc" # E3SM filename
+
+f_e2_1_h_ssp585_2015_2050 <- "1h_tas_ssp585_2015-2050.nc" # E3SM filename
+f_e2_1_h_ssp585_2051_2100 <- "1h_tas_ssp585_2051-2100.nc" # E3SM filename
+
+#creating strings for file paths. 
+# Note the p_ before each object because it is just a path name
+#historical data
+p_e2_1_g_1850_1900 <- paste(ncpath, f_e2_1_g_1850_1900, sep="/")
+p_e2_1_g_1901_1950 <- paste(ncpath, f_e2_1_g_1901_1950, sep="/")
+p_e2_1_g_1951_2000 <- paste(ncpath, f_e2_1_g_1951_2000, sep="/")
+p_e2_1_g_2001_2014 <- paste(ncpath, f_e2_1_g_2001_2014, sep="/")
+
+p_e2_1_h_1850_1900 <- paste(ncpath, f_e2_1_h_1850_1900, sep="/")
+p_e2_1_h_1901_1950 <- paste(ncpath, f_e2_1_h_1901_1950, sep="/")
+p_e2_1_h_1951_2000 <- paste(ncpath, f_e2_1_h_1951_2000, sep="/")
+p_e2_1_h_2001_2014 <- paste(ncpath, f_e2_1_h_2001_2014, sep="/")
+
+#predictive data
 
 
-e2_1_g_ssp126_2015_2050 <- "1g_tas_ssp126_2015-2050.nc" # E3SM filename
-e2_1_g_ssp126_2051_2100 <- "1g_tas_ssp126_2051-2100.nc" # E3SM filename
-e2_1_g_ssp585_2015_2050 <- "1g_tas_ssp585_2015-2050.nc" # E3SM filename
-e2_1_g_ssp585_2051_2100 <- "1g_tas_ssp585_2051-2100.nc" # E3SM filename
 
 
-e2_1_h_ssp126_2015_2050 <- "1h_tas_ssp126_2015-2050.nc" # E3SM filename
-e2_1_h_ssp126_2051_2100 <- "1h_tas_ssp126_2051-2100.nc" # E3SM filename
-e2_1_h_ssp585_2015_2050 <- "1h_tas_ssp585_2015-2050.nc" # E3SM filename
-e2_1_h_ssp585_2051_2100 <- "1h_tas_ssp585_2051-2100.nc" # E3SM filename
+
+#ncfname2 <- paste(ncpath, ncname2, sep="/")
+
+#nc_open(e2_1_h_ssp585_2051_2100)
 
 
-ncfname1 <- paste(ncpath, ncname1, sep="/")
-ncfname2 <- paste(ncpath, ncname2, sep="/")
-
-nc_open(ncfname1)
-
-
-ncin_e3sm1 <- nc_open(ncfname1)
-ncin_e3sm2 <- nc_open(ncfname2)
+#ncin_e3sm1 <- nc_open(ncfname1)
+#ncin_e3sm2 <- nc_open(ncfname2)
 #print(ncin_e3sm)
 
 ```
