@@ -285,8 +285,64 @@ rtime <- chron(time,origin=c(tmonth, tday, tyear))
 You can use concatenation to stick the temperature data together as well: here I'm using the "abind" package to do this, where the "along" argument tells R which dimension to concatentate the arrays along. Whether or not you choose to do this is up to you - for some applications it will be more necessary than others. You can also regionally average the data from each file individually, then concatenate those average time series... there are lots of possibilities!
 
 ```{r read_e3smtemp}
-tas1 <- ncvar_get(ncin_e3sm1, "tas")
-tas2 <- ncvar_get(ncin_e3sm2, "tas")
+
+#extracting historical tas data 
+tas_e2_1_g_1850_1900 <- ncvar_get(e2_1_g_1850_1900, "tas")
+tas_e2_1_g_1901_1950 <- ncvar_get(e2_1_g_1901_1950, "tas")
+tas_e2_1_g_1951_2000 <- ncvar_get(e2_1_g_1951_2000, "tas")
+tas_e2_1_g_2001_2014 <- ncvar_get(e2_1_g_2001_2014, "tas")
+
+tas_e2_1_h_1850_1900 <- ncvar_get(e2_1_h_1850_1900, "tas")
+tas_e2_1_h_1901_1950 <- ncvar_get(e2_1_h_1901_1950, "tas")
+tas_e2_1_h_1951_2000 <- ncvar_get(e2_1_h_1951_2000, "tas")
+tas_e2_1_h_2001_2014 <- ncvar_get(e2_1_h_2001_2014, "tas")
+
+#extracting predicted tas data 
+tas_e2_1_g_ssp126_2015_2050 <- ncvar_get(e2_1_g_ssp126_2015_2050, "tas")
+tas_e2_1_g_ssp126_2051_2100 <- ncvar_get(e2_1_g_ssp126_2051_2100, "tas")
+tas_e2_1_g_ssp585_2051_2100 <- ncvar_get(e2_1_g_ssp585_2015_2050, "tas")
+tas_e2_1_g_ssp585_2051_2100 <- ncvar_get(e2_1_g_ssp585_2051_2100, "tas")
+
+
+tas_e2_1_h_ssp126_2015_2050 <- ncvar_get(e2_1_h_ssp126_2015_2050, "tas")
+tas_e2_1_h_ssp126_2051_2100 <- ncvar_get(e2_1_h_ssp126_2051_2100, "tas")
+tas_e2_1_h_ssp585_2051_2100 <- ncvar_get(e2_1_h_ssp585_2015_2050, "tas")
+tas_e2_1_h_ssp585_2051_2100 <- ncvar_get(e2_1_h_ssp585_2051_2100, "tas")
+
+#binding historical tas data
+
+tas_e2_1_g_historical = abind(
+  tas_e2_1_g_1850_1900,
+  tas_e2_1_g_1901_1950,                              
+  tas_e2_1_g_1951_2000,
+  tas_e2_1_g_2001_2014, along=3)
+
+
+tas_e2_1_h_historical = abind(
+  tas_e2_1_h_1850_1900,
+  tas_e2_1_h_1901_1950,                              
+  tas_e2_1_h_1951_2000,
+  tas_e2_1_h_2001_2014, along=3)
+
+#binding predicted tas data
+
+tas_e2_1_g_ssp126 = abind(
+  tas_e2_1_g_ssp126_2015_2050,
+  tas_e2_1_g_ssp126_2051_2100)
+  
+tas_e2_1_g_ssp585 = abind(
+  tas_e2_1_g_ssp585_2015_2050,
+  tas_e2_1_g_ssp585_2051_2100)
+
+tas_e2_1_h_ssp126 = abind(
+  tas_e2_1_h_ssp126_2015_2050,
+  tas_e2_1_h_ssp126_2051_2100)
+
+tas_e2_1_h_ssp585 = abind(
+  tas_e2_1_h_ssp585_2015_2050,
+  tas_e2_1_h_ssp585_2051_2100)
+
+
 
 
 
