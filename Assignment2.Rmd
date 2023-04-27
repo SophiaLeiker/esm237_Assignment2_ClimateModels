@@ -175,7 +175,6 @@ dname <- "tas"  # this is the name of the variable you want to look at
 
 #historical data from NASA models GISS-E2.1-G and NASA GISS-E2.1-H
 #note the f_ before each one because this is just file name 
-
 f_e2_1_g_1850_1900 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
 f_e2_1_g_1901_1950 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
 f_e2_1_g_1951_2000 <- "1g_tas_historical_1951-2000.nc"  # E3SM filename
@@ -191,15 +190,15 @@ f_e2_1_g_ssp126_2015_2050 <- "1g_tas_ssp126_2015-2050.nc" # E3SM filename
 f_e2_1_g_ssp126_2051_2100 <- "1g_tas_ssp126_2051-2100.nc" # E3SM filename
 f_e2_1_g_ssp585_2015_2050 <- "1g_tas_ssp585_2015-2050.nc" # E3SM filename
 f_e2_1_g_ssp585_2051_2100 <- "1g_tas_ssp585_2051-2100.nc" # E3SM filename
+
 f_e2_1_h_ssp126_2015_2050 <- "1h_tas_ssp126_2015-2050.nc" # E3SM filename
 f_e2_1_h_ssp126_2051_2100 <- "1h_tas_ssp126_2051-2100.nc" # E3SM filename
-
 f_e2_1_h_ssp585_2015_2050 <- "1h_tas_ssp585_2015-2050.nc" # E3SM filename
 f_e2_1_h_ssp585_2051_2100 <- "1h_tas_ssp585_2051-2100.nc" # E3SM filename
 
-#creating strings for file paths. 
-# Note the p_ before each object because it is just a path name
-#historical data
+#creating strings for file paths.. Note the p_ before each object because it is just a path name
+
+#historical data:
 p_e2_1_g_1850_1900 <- paste(ncpath, f_e2_1_g_1850_1900, sep="/")
 p_e2_1_g_1901_1950 <- paste(ncpath, f_e2_1_g_1901_1950, sep="/")
 p_e2_1_g_1951_2000 <- paste(ncpath, f_e2_1_g_1951_2000, sep="/")
@@ -210,26 +209,51 @@ p_e2_1_h_1901_1950 <- paste(ncpath, f_e2_1_h_1901_1950, sep="/")
 p_e2_1_h_1951_2000 <- paste(ncpath, f_e2_1_h_1951_2000, sep="/")
 p_e2_1_h_2001_2014 <- paste(ncpath, f_e2_1_h_2001_2014, sep="/")
 
-#predictive data
+#predictive data:
+p_e2_1_g_ssp126_2015_2050 <- paste(ncpath, f_e2_1_g_ssp126_2015_2050, sep="/")
+p_e2_1_g_ssp126_2051_2100 <- paste(ncpath, f_e2_1_g_ssp126_2051_2100, sep="/")
+p_e2_1_g_ssp585_2015_2050 <- paste(ncpath, f_e2_1_g_ssp585_2015_2050, sep="/")
+p_e2_1_g_ssp585_2051_2100 <- paste(ncpath, f_e2_1_g_ssp585_2051_2100, sep="/")
 
+p_e2_1_h_ssp126_2015_2050 <- paste(ncpath, f_e2_1_h_ssp126_2015_2050, sep="/")
+p_e2_1_h_ssp126_2051_2100 <- paste(ncpath, f_e2_1_h_ssp126_2051_2100, sep="/")
+p_e2_1_h_ssp585_2015_2050 <- paste(ncpath, f_e2_1_h_ssp585_2015_2050, sep="/")
+p_e2_1_h_ssp585_2051_2100 <- paste(ncpath, f_e2_1_h_ssp585_2051_2100, sep="/")
 
+#creating objects after opening files... this is a lot 
+#historical data 
+e2_1_g_1850_1900 <- nc_open(p_e2_1_g_1850_1900)
+e2_1_g_1901_1950 <- nc_open(p_e2_1_g_1901_1950)
+e2_1_g_1951_2000 <- nc_open(p_e2_1_g_1951_2000)
+e2_1_g_2001_2014 <- nc_open(p_e2_1_g_2001_2014)
 
+e2_1_h_1850_1900 <- nc_open(p_e2_1_h_1850_1900)
+e2_1_h_1901_1950 <- nc_open(p_e2_1_h_1901_1950)
+e2_1_h_1951_2000 <- nc_open(p_e2_1_h_1951_2000)
+e2_1_h_2001_2014 <- nc_open(p_e2_1_h_2001_2014)
+  
+#predictive data 
+e2_1_g_ssp126_2015_2050 <- nc_open(p_e2_1_g_ssp126_2015_2050)
+e2_1_g_ssp126_2051_2100 <- nc_open(p_e2_1_g_ssp126_2051_2100)
+e2_1_g_ssp585_2015_2050 <- nc_open(p_e2_1_g_ssp585_2015_2050)
+e2_1_g_ssp585_2051_2100 <- nc_open(p_e2_1_g_ssp585_2051_2100)
 
+e2_1_h_ssp126_2015_2050 <- nc_open(p_e2_1_h_ssp126_2015_2050)
+e2_1_h_ssp126_2051_2100 <- nc_open(p_e2_1_h_ssp126_2051_2100)
+e2_1_h_ssp585_2015_2050 <- nc_open(p_e2_1_h_ssp585_2015_2050)
+e2_1_h_ssp585_2051_2100 <- nc_open(p_e2_1_h_ssp585_2051_2100)
 
-#ncfname2 <- paste(ncpath, ncname2, sep="/")
-
-#nc_open(e2_1_h_ssp585_2051_2100)
-
-
-#ncin_e3sm1 <- nc_open(ncfname1)
-#ncin_e3sm2 <- nc_open(ncfname2)
-#print(ncin_e3sm)
-
+#lol 
 ```
 
 Now once again, we read in the time coordinate information as we did for CESM. Since we happen to know that the second file begins immediately after the first one, we also know that we can concatenate the time information from the two files to get a time series of the full time period:
 
 ```{r reade3smtime}
+
+e2_1_g_1 <- ncvar_get(ncin_e3sm1,"time")
+time2 <- ncvar_get(ncin_e3sm2,"time")
+
+
 time1 <- ncvar_get(ncin_e3sm1,"time")
 tunits1 <- ncatt_get(ncin_e3sm1,"time","units")
 time2 <- ncvar_get(ncin_e3sm2,"time")
