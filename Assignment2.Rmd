@@ -173,16 +173,29 @@ Here is a brief demonstration of how to read in data from E3SM; once you do, you
 ncpath <- here("data")   # path (directory)
 dname <- "tas"  # this is the name of the variable you want to look at
 
-g1 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
-ncname2 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
+#historical data from models
+
+e2_1_g_1850_1900 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
+e2_1_g_1901_1950 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
+e2_1_g_1951_2000 <- "1g_tas_historical_1951-2000.nc"  # E3SM filename
+e2_1_g_2001_2014 <- "1g_tas_historical_2001-2014.nc"  # E3SM filename
+
+e2_1_h_1850_1900 <- "1h_tas_historical_1850-1900.nc"  # E3SM filename
+e2_1_h_1901_1950 <- "1h_tas_historical_1901-1950.nc"  # E3SM filename
+e2_1_h_1951_2000 <- "1h_tas_historical_1951-2000.nc"  # E3SM filename
+e2_1_h_2001_2014 <- "1h_tas_historical_2001-2014.nc"  # E3SM filename
 
 
+e2_1_g_ssp126_2015_2050 <- "1g_tas_ssp126_2015-2050.nc" # E3SM filename
+e2_1_g_ssp126_2051_2100 <- "1g_tas_ssp126_2051-2100.nc" # E3SM filename
+e2_1_g_ssp585_2015_2050 <- "1g_tas_ssp585_2015-2050.nc" # E3SM filename
+e2_1_g_ssp585_2051_2100 <- "1g_tas_ssp585_2051-2100.nc" # E3SM filename
 
 
-
-
-
-
+e2_1_h_ssp126_2015_2050 <- "1h_tas_ssp126_2015-2050.nc" # E3SM filename
+e2_1_h_ssp126_2051_2100 <- "1h_tas_ssp126_2051-2100.nc" # E3SM filename
+e2_1_h_ssp585_2015_2050 <- "1h_tas_ssp585_2015-2050.nc" # E3SM filename
+e2_1_h_ssp585_2051_2100 <- "1h_tas_ssp585_2051-2100.nc" # E3SM filename
 
 
 ncfname1 <- paste(ncpath, ncname1, sep="/")
