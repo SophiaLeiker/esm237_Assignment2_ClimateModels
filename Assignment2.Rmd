@@ -43,7 +43,7 @@ library(here)
 
 # path and filename for data
 ncpath <- here("data")
-ncname <- "tas_historical_r1i1p3f1_1850-1900.nc"  # CESM1 filename
+ncname <- "1g_tas_historical_1850-1900.nc"  # CESM1 filename
 ncfname <- paste(ncpath, ncname, sep="/")
 dname <- "TS"  # this is the name of the variable you want to look at
 
@@ -170,14 +170,17 @@ Here is a brief demonstration of how to read in data from E3SM; once you do, you
 
 ```{r reade3sm}
 # path and filename for data
-ncpath <- "~/Box Sync/Courses_UCSB/ESM237_Spring2023/"   # path (directory)
+ncpath <- here("data")   # path (directory)
 dname <- "tas"  # this is the name of the variable you want to look at
 
-ncname1 <- "tas_Amon_E3SM-1-0_historical_r1i1p1f1_gr_185001-187412.nc"  # E3SM filename
-ncname2 <- "tas_Amon_E3SM-1-0_historical_r1i1p1f1_gr_187501-189912.nc"  # E3SM filename
+ncname1 <- "1g_tas_historical_1850-1900.nc"  # E3SM filename
+ncname2 <- "1g_tas_historical_1901-1950.nc"  # E3SM filename
 
-ncfname1 <- paste(ncpath, ncname1, sep="")
-ncfname2 <- paste(ncpath, ncname2, sep="")
+ncfname1 <- paste(ncpath, ncname1, sep="/")
+ncfname2 <- paste(ncpath, ncname2, sep="/")
+
+nc_open(ncfname1)
+
 
 ncin_e3sm1 <- nc_open(ncfname1)
 ncin_e3sm2 <- nc_open(ncfname2)
