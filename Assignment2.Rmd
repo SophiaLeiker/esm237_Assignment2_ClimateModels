@@ -165,6 +165,8 @@ clim_full <- clim %>%
 #SOPHIA ENEDED CODING HERE!!!! ###########
 
 
+## Sophia - all of our code is below. The final code chunk is our ggplot. We need to make sure the regression is working properly and fix aesthetics.
+
 Part 2: E3SM Data
 
 Here is a brief demonstration of how to read in data from E3SM; once you do, you can use the exact same techniques as in Part 1 to create time series plots, maps, etc. Here I'm going to read in the two files into two different variables - you can also build a loop to do things if you like!
@@ -276,14 +278,6 @@ Notice that the units of time are now different! E3SM uses a calendar which begi
 rtime=seq.Date(as.Date("1850/01/01"),as.Date("2100/12/01"),by="months")
 
 ```
-tustr <- strsplit(tunits$value, " ")
-tdstr <- strsplit(unlist(tustr)[3], "-")
-tmonth <- as.integer(unlist(tdstr)[2])
-tday <- as.integer(unlist(tdstr)[3])
-tyear <- as.integer(unlist(tdstr)[1])
-rtime <- chron(time,origin=c(tmonth, tday, tyear))
-
-
 
 
 You can use concatenation to stick the temperature data together as well: here I'm using the "abind" package to do this, where the "along" argument tells R which dimension to concatentate the arrays along. Whether or not you choose to do this is up to you - for some applications it will be more necessary than others. You can also regionally average the data from each file individually, then concatenate those average time series... there are lots of possibilities!
