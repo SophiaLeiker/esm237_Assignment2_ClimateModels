@@ -426,23 +426,25 @@ melt_yrly_clim_e2_1_g_ssp126
 combined_climate_data_melted <- rbind(melt_yrly_clim_e2_1_g_ssp126,melt_yrly_clim_e2_1_g_ssp585,melt_yrly_clim_e2_1_h_ssp126,melt_yrly_clim_e2_1_h_ssp585)
 
 combined_climate_data <- pivot_wider(combined_climate_data_melted, names_from = dataset, values_from = average_temp)
-
+combined_climate_data
 ```
 
 
 
 
 ```{r}
+# plot results
+# WE STILL NEED TO ADJUST THESE COLORS AND ADD A LEGEND FOR MODEL TYPE AND SCENARIO. WE ALSO NEED TO MAKE SURE THAT THE REGRESSION IS WORKING CORRECTLY
 
-ggplot()+geom_line(data = yrly_clim_e2_1_g_ssp126, aes(x=year(rtime), y=e2_1_g_ssp126, color="blue"))
-
-
-
-
-# +labs(y="Concordia Station Temperature", x="Year")+ geom_smooth(method="lm")
-
-
-
+ggplot()+
+  geom_line(data = yrly_clim_e2_1_g_ssp126, aes(x=1850:2100, y=e2_1_g_ssp126-273.15), color='blue')+  
+  geom_line(data = yrly_clim_e2_1_g_ssp585, aes(x=1850:2100, y=e2_1_g_ssp585-273.15), color='red')+
+  geom_line(data = yrly_clim_e2_1_h_ssp126, aes(x=1850:2100, y=e2_1_h_ssp126-273.15), color='green')+
+  geom_line(data = yrly_clim_e2_1_h_ssp585, aes(x=1850:2100, y=e2_1_h_ssp585-273.15), color='pink')+
+  labs(y="Concordia Station Temperature (degrees C)", x="Year", title = "Mean Surface Air Temperature Change in Concordia Station, Antartica")+ 
+  geom_smooth(method="lm")+
+  theme_classic()+
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 
