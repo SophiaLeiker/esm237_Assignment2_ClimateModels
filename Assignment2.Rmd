@@ -256,19 +256,16 @@ time2 <- ncvar_get(e2_1_g_1901_1950,"time")
 time3 <- ncvar_get(e2_1_g_1951_2000,"time")
 time4 <- ncvar_get(e2_1_g_2001_2014,"time")
 time5 <- ncvar_get(e2_1_g_ssp585_2015_2050,"time")
-time5 <- ncvar_get(e2_1_g_ssp585_2051_2100,"time")
+time6 <- ncvar_get(e2_1_g_ssp585_2051_2100,"time")
 
-#conconate time series
-time=c(time1,time2,time3,time4,time5)
+#conconate time series (creating multiple: one for history, one for predictions, one for total)
+timehistory=c(time1,time2,time3,time4)
+timefuture=c(time5,time6)
+timetotal=c(time1,time2,time3,time4,time5,time6)
 
 #get units for reference - it's the same for each object
-tunits <- ncatt_get(e2_1_g_1850_1900,"time","units")
+tunits <- ncatt_get(e2_1_g_ssp585_2051_2100,"time","units")
 
-#tunits1 <- ncatt_get(ncin_e3sm1,"time","units")
-#tunits2 <- ncatt_get(ncin_e3sm2,"time","unit")
-
-
-#print(tunits1)
 ```
 
 Notice that the units of time are now different! E3SM uses a calendar which begins in 1850, rather than 1920. But we can still use the same method of splitting the units string, then giving it to 'chron' to make a time that works.
@@ -285,7 +282,6 @@ rtime <- chron(time,origin=c(tmonth, tday, tyear))
 You can use concatenation to stick the temperature data together as well: here I'm using the "abind" package to do this, where the "along" argument tells R which dimension to concatentate the arrays along. Whether or not you choose to do this is up to you - for some applications it will be more necessary than others. You can also regionally average the data from each file individually, then concatenate those average time series... there are lots of possibilities!
 
 ```{r read_e3smtemp}
-
 #extracting historical tas data 
 tas_e2_1_g_1850_1900 <- ncvar_get(e2_1_g_1850_1900, "tas")
 tas_e2_1_g_1901_1950 <- ncvar_get(e2_1_g_1901_1950, "tas")
@@ -311,34 +307,37 @@ tas_e2_1_h_ssp585_2051_2100 <- ncvar_get(e2_1_h_ssp585_2051_2100, "tas")
 
 #binding historical tas data
 
-tas_e2_1_g_historical = abind(
+tas_e2_1_g_ssp126 = abind(
   tas_e2_1_g_1850_1900,
   tas_e2_1_g_1901_1950,                              
   tas_e2_1_g_1951_2000,
-  tas_e2_1_g_2001_2014, along=3)
-
-
-tas_e2_1_h_historical = abind(
-  tas_e2_1_h_1850_1900,
-  tas_e2_1_h_1901_1950,                              
-  tas_e2_1_h_1951_2000,
-  tas_e2_1_h_2001_2014, along=3)
-
-#binding predicted tas data
-
-tas_e2_1_g_ssp126 = abind(
+  tas_e2_1_g_2001_2014,
   tas_e2_1_g_ssp126_2015_2050,
   tas_e2_1_g_ssp126_2051_2100)
-  
+
+
 tas_e2_1_g_ssp585 = abind(
+  tas_e2_1_g_1850_1900,
+  tas_e2_1_g_1901_1950,                              
+  tas_e2_1_g_1951_2000,
+  tas_e2_1_g_2001_2014,
   tas_e2_1_g_ssp585_2015_2050,
   tas_e2_1_g_ssp585_2051_2100)
 
+
 tas_e2_1_h_ssp126 = abind(
+  tas_e2_1_h_1850_1900,
+  tas_e2_1_h_1901_1950,                              
+  tas_e2_1_h_1951_2000,
+  tas_e2_1_h_2001_2014,
   tas_e2_1_h_ssp126_2015_2050,
   tas_e2_1_h_ssp126_2051_2100)
 
 tas_e2_1_h_ssp585 = abind(
+  tas_e2_1_h_1850_1900,
+  tas_e2_1_h_1901_1950,                              
+  tas_e2_1_h_1951_2000,
+  tas_e2_1_h_2001_2014,
   tas_e2_1_h_ssp585_2015_2050,
   tas_e2_1_h_ssp585_2051_2100)
 
@@ -346,24 +345,62 @@ tas_e2_1_h_ssp585 = abind(
 ```
 
 
+The following commands read in the longitude and latitude information, and store the lengths of each axis in variables 'nlon' and 'nlat'.
+
+```{r readcoords}
+lon <- ncvar_get(e2_1_g_1850_1900,"lon")
+nlon <- dim(lon)
+lat <- ncvar_get(e2_1_g_1850_1900,"lat")
+nlat <- dim(lat)
+
+head(lat)
+head(lon)
+
+#Specify latitude and longitude and get averages 
+##These latitutde and longitute ranges align with Concordian Station up in Antarctica 
+lats=which(lat >= -78.5 & lat <= -71.7) # insert lattitude and longitude readings here!
+lons=which(lon >= 116.8 & lon <= 129.9)
+
+````
+
+
 
 ```{r}
-
 #get averages 
-Specify latitude and longitude and get averages 
-##These latitutde and longitute ranges align with Concordian Station up in Antarctica 
-lats=which(lat >= -78.5 & lat <= -71.7) # insert lattitude and longitude readings here!
-lons=which(lon >= 116.8 & lon <= 129.9)
 
-tsavg <- apply(tas_e2_1_g_historical[lons,lats,],3,mean)
+tsavg_e2_1_g_ssp126 <- apply(tas_e2_1_g_ssp126[lons,lats,],3,mean)
+tsavg_e2_1_g_ssp585 <- apply(tas_e2_1_g_ssp585[lons,lats,],3,mean)
 
+tsavg_e2_1_h_ssp126 <- apply(tas_e2_1_h_ssp126[lons,lats,],3,mean)
+tsavg_e2_1_h_ssp585 <- apply(tas_e2_1_h_ssp585[lons,lats,],3,mean)
 
-##These latitutde and longitute ranges align with Concordian Station up in Antarctica 
-lats=which(lat >= -78.5 & lat <= -71.7) # insert lattitude and longitude readings here!
-lons=which(lon >= 116.8 & lon <= 129.9)
+```
 
 
+```{r}
+#creating dataframes 
+monthly_clim_e2_1_g_ssp126 <- data.frame(time=timetotal, tsavg=tsavg_e2_1_g_ssp126)
+monthly_clim_e2_1_g_ssp585 <- data.frame(time=timetotal, tsavg=tsavg_e2_1_g_ssp585)
+
+monthly_clim_e2_1_h_ssp126 <- data.frame(time=timetotal, tsavg=tsavg_e2_1_h_ssp126)
+monthly_clim_e2_1_h_ssp585 <- data.frame(time=timetotal, tsavg=tsavg_e2_1_h_ssp585)
+```
+
+```{r}
+yrly_clim_e2_1_g_ssp126 = monthly_clim_e2_1_g_ssp126 %>% group_by(year(rtime)) 
+# %>% #summarize(Tann=mean(tsavg_e2_1_g_ssp126))
+#yrclim$dt = unique(year(rtime))
+
+
+#clim <- data.frame(time=rtime, tsavg=tsavg)
+#yrclim = clim %>% group_by(year(rtime)) %>% summarize(Tann=mean(tsavg))
+# yrclim$dt = unique(year(rtime))
 
 
 ```
+
+
+
+
+
 
