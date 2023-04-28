@@ -300,13 +300,13 @@ tas_e2_1_h_2001_2014 <- ncvar_get(e2_1_h_2001_2014, "tas")
 #extracting predicted tas data 
 tas_e2_1_g_ssp126_2015_2050 <- ncvar_get(e2_1_g_ssp126_2015_2050, "tas")
 tas_e2_1_g_ssp126_2051_2100 <- ncvar_get(e2_1_g_ssp126_2051_2100, "tas")
-tas_e2_1_g_ssp585_2051_2100 <- ncvar_get(e2_1_g_ssp585_2015_2050, "tas")
+tas_e2_1_g_ssp585_2015_2050 <- ncvar_get(e2_1_g_ssp585_2015_2050, "tas")
 tas_e2_1_g_ssp585_2051_2100 <- ncvar_get(e2_1_g_ssp585_2051_2100, "tas")
 
 
 tas_e2_1_h_ssp126_2015_2050 <- ncvar_get(e2_1_h_ssp126_2015_2050, "tas")
 tas_e2_1_h_ssp126_2051_2100 <- ncvar_get(e2_1_h_ssp126_2051_2100, "tas")
-tas_e2_1_h_ssp585_2051_2100 <- ncvar_get(e2_1_h_ssp585_2015_2050, "tas")
+tas_e2_1_h_ssp585_2015_2050 <- ncvar_get(e2_1_h_ssp585_2015_2050, "tas")
 tas_e2_1_h_ssp585_2051_2100 <- ncvar_get(e2_1_h_ssp585_2051_2100, "tas")
 
 #binding historical tas data
@@ -343,8 +343,27 @@ tas_e2_1_h_ssp585 = abind(
   tas_e2_1_h_ssp585_2051_2100)
 
 
-
-
-
-#tas=abind(tas1,tas2,along=1)
 ```
+
+
+
+```{r}
+
+#get averages 
+Specify latitude and longitude and get averages 
+##These latitutde and longitute ranges align with Concordian Station up in Antarctica 
+lats=which(lat >= -78.5 & lat <= -71.7) # insert lattitude and longitude readings here!
+lons=which(lon >= 116.8 & lon <= 129.9)
+
+tsavg <- apply(tas_e2_1_g_historical[lons,lats,],3,mean)
+
+
+##These latitutde and longitute ranges align with Concordian Station up in Antarctica 
+lats=which(lat >= -78.5 & lat <= -71.7) # insert lattitude and longitude readings here!
+lons=which(lon >= 116.8 & lon <= 129.9)
+
+
+
+
+```
+
