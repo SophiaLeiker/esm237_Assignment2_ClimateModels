@@ -40,6 +40,7 @@ library(RColorBrewer)
 library(lattice)
 library(abind)
 library(here)
+library(reshape2)
 
 # path and filename for data
 ncpath <- here("data")
@@ -271,13 +272,19 @@ tunits <- ncatt_get(e2_1_g_ssp585_2051_2100,"time","units")
 Notice that the units of time are now different! E3SM uses a calendar which begins in 1850, rather than 1920. But we can still use the same method of splitting the units string, then giving it to 'chron' to make a time that works.
 
 ```{r process_e3smtime}
+
+rtime=seq.Date(as.Date("1850/01/01"),as.Date("2100/12/01"),by="months")
+
+```
 tustr <- strsplit(tunits$value, " ")
 tdstr <- strsplit(unlist(tustr)[3], "-")
 tmonth <- as.integer(unlist(tdstr)[2])
 tday <- as.integer(unlist(tdstr)[3])
 tyear <- as.integer(unlist(tdstr)[1])
 rtime <- chron(time,origin=c(tmonth, tday, tyear))
-```
+
+
+
 
 You can use concatenation to stick the temperature data together as well: here I'm using the "abind" package to do this, where the "along" argument tells R which dimension to concatentate the arrays along. Whether or not you choose to do this is up to you - for some applications it will be more necessary than others. You can also regionally average the data from each file individually, then concatenate those average time series... there are lots of possibilities!
 
@@ -387,18 +394,56 @@ monthly_clim_e2_1_h_ssp585 <- data.frame(time=timetotal, tsavg=tsavg_e2_1_h_ssp5
 ```
 
 ```{r}
-yrly_clim_e2_1_g_ssp126 = monthly_clim_e2_1_g_ssp126 %>% group_by(year(rtime)) 
-# %>% #summarize(Tann=mean(tsavg_e2_1_g_ssp126))
-#yrclim$dt = unique(year(rtime))
+yrly_clim_e2_1_g_ssp126 = monthly_clim_e2_1_g_ssp126 %>% group_by(year(rtime))%>%
+summarize(e2_1_g_ssp126=mean(tsavg)) 
 
+yrly_clim_e2_1_g_ssp585 = monthly_clim_e2_1_g_ssp585 %>% group_by(year(rtime))%>%
+summarize(e2_1_g_ssp585=mean(tsavg)) 
 
-#clim <- data.frame(time=rtime, tsavg=tsavg)
-#yrclim = clim %>% group_by(year(rtime)) %>% summarize(Tann=mean(tsavg))
-# yrclim$dt = unique(year(rtime))
+yrly_clim_e2_1_h_ssp126 = monthly_clim_e2_1_h_ssp126 %>% group_by(year(rtime))%>%
+summarize(e2_1_h_ssp126=mean(tsavg)) 
+
+yrly_clim_e2_1_h_ssp585 = monthly_clim_e2_1_h_ssp585 %>% group_by(year(rtime))%>%
+summarize(e2_1_h_ssp585=mean(tsavg)) 
 
 
 ```
 
+```{r}
+#melting values and binding together
+melt_yrly_clim_e2_1_g_ssp126 <- melt(yrly_clim_e2_1_g_ssp126, id.vars = "year(rtime)",variable.name = "dataset", value.name = "average_temp")
+melt_yrly_clim_e2_1_g_ssp126
+
+melt_yrly_clim_e2_1_g_ssp585 <- melt(yrly_clim_e2_1_g_ssp585, id.vars = "year(rtime)",variable.name = "dataset", value.name = "average_temp")
+melt_yrly_clim_e2_1_g_ssp126
+
+melt_yrly_clim_e2_1_h_ssp126 <- melt(yrly_clim_e2_1_h_ssp126, id.vars = "year(rtime)",variable.name = "dataset", value.name = "average_temp")
+melt_yrly_clim_e2_1_g_ssp126
+
+melt_yrly_clim_e2_1_h_ssp585 <- melt(yrly_clim_e2_1_h_ssp585, id.vars = "year(rtime)",variable.name = "dataset", value.name = "average_temp")
+melt_yrly_clim_e2_1_g_ssp126
+
+combined_climate_data_melted <- rbind(melt_yrly_clim_e2_1_g_ssp126,melt_yrly_clim_e2_1_g_ssp585,melt_yrly_clim_e2_1_h_ssp126,melt_yrly_clim_e2_1_h_ssp585)
+
+combined_climate_data <- pivot_wider(combined_climate_data_melted, names_from = dataset, values_from = average_temp)
+
+```
+
+
+
+
+```{r}
+
+ggplot()+geom_line(data = yrly_clim_e2_1_g_ssp126, aes(x=year(rtime), y=e2_1_g_ssp126, color="blue"))
+
+
+
+
+# +labs(y="Concordia Station Temperature", x="Year")+ geom_smooth(method="lm")
+
+
+
+```
 
 
 
