@@ -437,7 +437,7 @@ plot_output <- ggplot() +
   geom_line(data = yrly_clim_e2_1_h_ssp585, aes(x = 1850:2100, y = e2_1_h_ssp585 - 273.15, color = 'NASA GISS-E2.1-H SSP585')) +
   labs(y = "Concordia Station Temperature (degrees C)", x = "Year", title = "Mean Surface Air Temperature Change in Concordia Station, Antartica", subtitle = "Models Used: NASA GISS-E2.1-G and NASA GISS-E2.1-H", caption = "Smoothing Method Employed: Linear Regression", color = "Legend") + 
   geom_smooth(method = "lm") +
-  geom_vline(xintercept = 2023, linetype = "dashed") + 
+  geom_vline(xintercept = 2014, linetype = "dashed") + 
   scale_color_manual(values = c('blue', 'cadetblue3', 'darkgoldenrod1', 'chocolate1')) +
   theme_classic() +
   theme(plot.title = element_text(hjust = 0.5), 
@@ -447,6 +447,8 @@ plot_output <- ggplot() +
         legend.key.size = unit(1.5, "lines"),
         legend.margin = margin(t = 0, b = 0, r = 10, l = 10),
         legend.box.just = "right")
+
+plot_output
 
 # Save the plot as a jpeg file in a folder called "plots"
 folder_name <- "plots"
