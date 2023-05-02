@@ -362,7 +362,7 @@ head(lon)
 lats=which(lat >= -78.5 & lat <= -71.7) # insert lattitude and longitude readings here!
 lons=which(lon >= 116.8 & lon <= 129.9)
 
-````
+```
 
 
 
@@ -430,17 +430,31 @@ combined_climate_data
 # plot results
 # WE STILL NEED TO ADJUST THESE COLORS AND ADD A LEGEND FOR MODEL TYPE AND SCENARIO. WE ALSO NEED TO MAKE SURE THAT THE REGRESSION IS WORKING CORRECTLY
 
-ggplot()+
-  geom_line(data = yrly_clim_e2_1_g_ssp126, aes(x=1850:2100, y=e2_1_g_ssp126-273.15), color='blue')+  
-  geom_line(data = yrly_clim_e2_1_g_ssp585, aes(x=1850:2100, y=e2_1_g_ssp585-273.15), color='red')+
-  geom_line(data = yrly_clim_e2_1_h_ssp126, aes(x=1850:2100, y=e2_1_h_ssp126-273.15), color='green')+
-  geom_line(data = yrly_clim_e2_1_h_ssp585, aes(x=1850:2100, y=e2_1_h_ssp585-273.15), color='pink')+
-  labs(y="Concordia Station Temperature (degrees C)", x="Year", title = "Mean Surface Air Temperature Change in Concordia Station, Antartica")+ 
-  geom_smooth(method="lm")+
-  theme_classic()+
-  theme(plot.title = element_text(hjust = 0.5))
-```
+plot_output <- ggplot() +
+  geom_line(data = yrly_clim_e2_1_g_ssp126, aes(x = 1850:2100, y = e2_1_g_ssp126 - 273.15, color = 'NASA GISS-E2.1-G SSP126')) +
+  geom_line(data = yrly_clim_e2_1_g_ssp585, aes(x = 1850:2100, y = e2_1_g_ssp585 - 273.15, color = 'NASA GISS-E2.1-G SSP585')) +
+  geom_line(data = yrly_clim_e2_1_h_ssp126, aes(x = 1850:2100, y = e2_1_h_ssp126 - 273.15, color = 'NASA GISS-E2.1-H SSP126')) +
+  geom_line(data = yrly_clim_e2_1_h_ssp585, aes(x = 1850:2100, y = e2_1_h_ssp585 - 273.15, color = 'NASA GISS-E2.1-H SSP585')) +
+  labs(y = "Concordia Station Temperature (degrees C)", x = "Year", title = "Mean Surface Air Temperature Change in Concordia Station, Antartica", subtitle = "Models Used: NASA GISS-E2.1-G and NASA GISS-E2.1-H", caption = "Smoothing Method Employed: Linear Regression", color = "Legend") + 
+  geom_smooth(method = "lm") +
+  geom_vline(xintercept = 2023, linetype = "dashed") + 
+  scale_color_manual(values = c('blue', 'cadetblue3', 'darkgoldenrod1', 'chocolate1')) +
+  theme_classic() +
+  theme(plot.title = element_text(hjust = 0.5), 
+        legend.position = "right", 
+        legend.title = element_text(size = 14, face = "bold"),
+        legend.text = element_text(size = 12),
+        legend.key.size = unit(1.5, "lines"),
+        legend.margin = margin(t = 0, b = 0, r = 10, l = 10),
+        legend.box.just = "right")
 
+# Save the plot as a jpeg file in a folder called "plots"
+folder_name <- "plots"
+file_name <- "plot_output1.jpg"
+file_path <- file.path(getwd(), folder_name, file_name)
+ggsave(filename = file_path, plot = plot_output, width = 12, height = 7)
+
+```
 
 
 
